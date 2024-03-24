@@ -4850,10 +4850,10 @@ Learning outcomes
 <div class="no-row-height column-margin column-container"><div class>
 <p>You may need to right-click on the link and select “Save link as…” to download the data files.</p>
 </div></div><ul>
-<li><a href="Barley.csv"><code>Barley.csv</code></a></li>
-<li><a href="Plant_growth.csv"><code>Plant_growth.csv</code></a></li>
-<li><a href="Turbidity.csv"><code>Turbidity.csv</code></a></li>
-<li><a href="Cattle.csv"><code>Cattle.csv</code></a></li>
+<li><a href="./Barley.csv"><code>Barley.csv</code></a></li>
+<li><a href="./Plant_growth.csv"><code>Plant_growth.csv</code></a></li>
+<li><a href="./Turbidity.csv"><code>Turbidity.csv</code></a></li>
+<li><a href="./Cattle.csv"><code>Cattle.csv</code></a></li>
 </ul>
 <p>The following external packages are used in this lab. Install them if you have not done so already.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="fu">c</span>(<span class="st">&quot;tidyverse&quot;</span>, <span class="st">&quot;car&quot;</span>), </span>
@@ -4917,8 +4917,8 @@ $ Yield   &lt;dbl&gt; 4.6, 4.3, 3.8, 3.4, 3.9, 3.9, 3.9, 4.4, 3.6, 3.6, 4.7, 3.9
 <p>Quickly preview the data as a plot to see if there are any trends or unusual observations.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>barley <span class="sc">%&gt;%</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Variety, <span class="at">y =</span> Yield)) <span class="sc">+</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Variety, <span class="at">y =</span> Yield)) <span class="sc">+</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_boxplot</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -4937,7 +4937,7 @@ $ Yield   &lt;dbl&gt; 4.6, 4.3, 3.8, 3.4, 3.9, 3.9, 3.9, 4.4, 3.6, 3.6, 4.7, 3.9
 
 <div class="no-row-height column-margin column-container"><div class>
 <p>It is <strong>important</strong> that when using mathematical symbols to denote the null and alternative hypotheses, you should <strong>always</strong> define what the symbols mean. Otherwise, the reader may not understand what you are referring to.</p>
-</div></div><p>The equations above are written in <span class="math inline">\LaTeX</span>, a typesetting system that is commonly used in scientific writing. You can learn more about <span class="math inline">\LaTeX</span> <a href="https://www.latex-project.org/">here</a>. The raw syntax used to write the equations are shown below:</p>
+</div></div><p>The equations above are written in LaTeX, a typesetting system that is commonly used in scientific writing. You can learn more about LaTeX <a href="https://www.latex-project.org/">here</a>. The raw syntax used to write the equations are shown below:</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>$$H_0: \mu_A = \mu_B$$</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>$$H_1: \mu_A \neq \mu_B$$</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p><strong>Why do we always define the null and alternative hypotheses?</strong> In complex research projects or when working in a team, it is important to ensure that everyone is on the same page. By defining the hypotheses, you can avoid misunderstandings and ensure that everyone is working towards the same goal as the mathematical notation is clear and unambiguous.</p>
@@ -4953,9 +4953,9 @@ $ Yield   &lt;dbl&gt; 4.6, 4.3, 3.8, 3.4, 3.9, 3.9, 3.9, 4.4, 3.6, 3.6, 4.7, 3.9
 <div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
 <div class="cell">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(barley, <span class="fu">aes</span>(<span class="at">sample =</span> Yield)) <span class="sc">+</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_qq</span>() <span class="sc">+</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_qq_line</span>() <span class="sc">+</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> Variety)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">stat_qq</span>() <span class="sc">+</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">stat_qq_line</span>() <span class="sc">+</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">facet_wrap</span>(<span class="sc">~</span>Variety)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -5060,7 +5060,7 @@ mean in group A mean in group B
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>plant_growth <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(<span class="st">&quot;Plant_growth.csv&quot;</span>)</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>tidy_plant <span class="ot">&lt;-</span> plant_growth <span class="sc">%&gt;%</span></span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="fu">c</span>(Treated, Control), <span class="at">names_to =</span> <span class="st">&quot;Treatment&quot;</span>, <span class="at">values_to =</span> <span class="st">&quot;Height&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="fu">c</span>(Treated, Control), <span class="at">names_to =</span> <span class="st">&quot;Treatment&quot;</span>, <span class="at">values_to =</span> <span class="st">&quot;Height&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>You may also need to perform a Shapiro-Wilk test to check for normality. To do this for each group, you can use the <code>tapply()</code> function.</p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tapply</span>(tidy_plant<span class="sc">$</span>Height, tidy_plant<span class="sc">$</span>Treatment, shapiro.test)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
