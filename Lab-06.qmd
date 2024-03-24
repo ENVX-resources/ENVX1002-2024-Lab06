@@ -303,7 +303,7 @@ The mean increase in height of the treated plants is significantly different fro
 ### Background
 A new filtering process was installed at a dam which provided drinking water for a nearby town. To check on its success, a number of water samples were taken at random times and locations in the weeks before and after the process was installed. The following are the turbidity values (units = NTU) of the water samples.
 
-## Instructions
+### Instructions
 Now we consider further examples of a two-sample *t*-test, but where the assumption of equal variance and normality may not be met for the raw data. Sometimes after applying a data transformation the analysis can proceed assuming equal variances -- but always check after a data transformation.  
 
 
