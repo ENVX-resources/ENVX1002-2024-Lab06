@@ -32,13 +32,6 @@
     "href": "Lab-06.html#exercise-3-turbidity",
     "title": "Lab-06 Two-sample t-test",
     "section": "Exercise 3: turbidity",
-    "text": "Exercise 3: turbidity\n\nBackground\nA new filtering process was installed at a dam which provided drinking water for a nearby town. To check on its success, a number of water samples were taken at random times and locations in the weeks before and after the process was installed. The following are the turbidity values (units = NTU) of the water samples."
-  },
-  {
-    "objectID": "Lab-06.html#instructions-2",
-    "href": "Lab-06.html#instructions-2",
-    "title": "Lab-06 Two-sample t-test",
-    "section": "Instructions",
-    "text": "Instructions\nNow we consider further examples of a two-sample t-test, but where the assumption of equal variance and normality may not be met for the raw data. Sometimes after applying a data transformation the analysis can proceed assuming equal variances – but always check after a data transformation.\nThe data can be read with the code below:\nturbidity &lt;-read_csv(\"Turbidity.csv\")\nFor data transformation, you may need to create a new variable in your dataset to store the transformed data. For example, to create a new variable TurbLog10 that stores the log10 transformed turbidity values, you can use the following code:\nturbidity$TurbLog10 &lt;- log10(turbidity$Turbidity)\nTo interpret the results for your conclusions, you may need to back-transform the mean and/or confidence interval values. To back transform log10 data you use:\n10^{\\text{mean or CI}}\nTo back-transform natural log, loge, you use:\ne^{\\text{mean or CI}}"
+    "text": "Exercise 3: turbidity\n\nBackground\nA new filtering process was installed at a dam which provided drinking water for a nearby town. To check on its success, a number of water samples were taken at random times and locations in the weeks before and after the process was installed. The following are the turbidity values (units = NTU) of the water samples.\n\n\nInstructions\nNow we consider further examples of a two-sample t-test, but where the assumption of equal variance and normality may not be met for the raw data. Sometimes after applying a data transformation the analysis can proceed assuming equal variances – but always check after a data transformation.\nThe data can be read with the code below:\nturbidity &lt;-read_csv(\"Turbidity.csv\")\nFor data transformation, you may need to create a new variable in your dataset to store the transformed data. For example, to create a new variable TurbLog10 that stores the log10 transformed turbidity values, you can use the following code:\nturbidity$TurbLog10 &lt;- log10(turbidity$Turbidity)\nTo interpret the results for your conclusions, you may need to back-transform the mean and/or confidence interval values. To back transform log10 data you use:\n10^{\\text{mean or CI}}\nTo back-transform natural log, loge, you use:\ne^{\\text{mean or CI}}"
   }
 ]
