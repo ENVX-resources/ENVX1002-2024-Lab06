@@ -1,0 +1,1178 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.542">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="description" content="School of Life and Environmental Sciences, The University of Sydney">
+
+<title>Lab-06 Two-sample t-test</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<style>
+
+      .quarto-title-block .quarto-title-banner h1,
+      .quarto-title-block .quarto-title-banner h2,
+      .quarto-title-block .quarto-title-banner h3,
+      .quarto-title-block .quarto-title-banner h4,
+      .quarto-title-block .quarto-title-banner h5,
+      .quarto-title-block .quarto-title-banner h6
+      {
+        color: #000;
+      }
+
+      .quarto-title-block .quarto-title-banner {
+        color: #000;
+background: white;
+      }
+</style>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+  </script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css">
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="site_libs/quarto-contrib/quarto-project/soles/assignment/assets/styles.css">
+</head>
+
+<body class="floating slimcontent">
+
+<div id="quarto-search-results"></div>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default toc-left page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Lab-06 Two-sample <em>t</em>-test</h1>
+            <p class="subtitle lead">ENVX1002</p>
+                  <div>
+        <div class="description">
+          School of Life and Environmental Sciences, The University of Sydney
+        </div>
+      </div>
+                </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">Semester 1, 2024</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#before-we-begin" id="toc-before-we-begin" class="nav-link active" data-scroll-target="#before-we-begin">Before we begin</a></li>
+  <li><a href="#exercise-1-barley-walk-through" id="toc-exercise-1-barley-walk-through" class="nav-link" data-scroll-target="#exercise-1-barley-walk-through">Exercise 1: barley (walk-through)</a>
+  <ul class="collapse">
+  <li><a href="#background" id="toc-background" class="nav-link" data-scroll-target="#background">Background</a></li>
+  <li><a href="#instructions" id="toc-instructions" class="nav-link" data-scroll-target="#instructions">Instructions</a></li>
+  <li><a href="#data-exploration" id="toc-data-exploration" class="nav-link" data-scroll-target="#data-exploration">Data exploration</a></li>
+  <li><a href="#hypothesis" id="toc-hypothesis" class="nav-link" data-scroll-target="#hypothesis">Hypothesis</a></li>
+  <li><a href="#assumptions" id="toc-assumptions" class="nav-link" data-scroll-target="#assumptions">Assumptions</a></li>
+  <li><a href="#test-statistic" id="toc-test-statistic" class="nav-link" data-scroll-target="#test-statistic">Test statistic</a></li>
+  <li><a href="#p-value" id="toc-p-value" class="nav-link" data-scroll-target="#p-value">P-value</a></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
+  </ul></li>
+  <li><a href="#exercise-2-plant-growth" id="toc-exercise-2-plant-growth" class="nav-link" data-scroll-target="#exercise-2-plant-growth">Exercise 2: plant growth</a>
+  <ul class="collapse">
+  <li><a href="#background-1" id="toc-background-1" class="nav-link" data-scroll-target="#background-1">Background</a></li>
+  <li><a href="#instructions-1" id="toc-instructions-1" class="nav-link" data-scroll-target="#instructions-1">Instructions</a></li>
+  </ul></li>
+  <li><a href="#answer-2" id="toc-answer-2" class="nav-link" data-scroll-target="#answer-2">Answer 2</a>
+  <ul class="collapse">
+  <li><a href="#data-exploration-1" id="toc-data-exploration-1" class="nav-link" data-scroll-target="#data-exploration-1">Data exploration</a></li>
+  <li><a href="#hypothesis-1" id="toc-hypothesis-1" class="nav-link" data-scroll-target="#hypothesis-1">Hypothesis</a></li>
+  <li><a href="#assumptions-1" id="toc-assumptions-1" class="nav-link" data-scroll-target="#assumptions-1">Assumptions</a></li>
+  <li><a href="#test-statistic-1" id="toc-test-statistic-1" class="nav-link" data-scroll-target="#test-statistic-1">Test statistic</a></li>
+  <li><a href="#p-value-1" id="toc-p-value-1" class="nav-link" data-scroll-target="#p-value-1">P-value</a></li>
+  <li><a href="#conclusion-1" id="toc-conclusion-1" class="nav-link" data-scroll-target="#conclusion-1">Conclusion</a></li>
+  </ul></li>
+  <li><a href="#exercise-3-turbidity" id="toc-exercise-3-turbidity" class="nav-link" data-scroll-target="#exercise-3-turbidity">Exercise 3: turbidity</a>
+  <ul class="collapse">
+  <li><a href="#background-2" id="toc-background-2" class="nav-link" data-scroll-target="#background-2">Background</a></li>
+  </ul></li>
+  <li><a href="#instructions-2" id="toc-instructions-2" class="nav-link" data-scroll-target="#instructions-2">Instructions</a></li>
+  <li><a href="#answer-3" id="toc-answer-3" class="nav-link" data-scroll-target="#answer-3">Answer 3</a>
+  <ul class="collapse">
+  <li><a href="#data-exploration-2" id="toc-data-exploration-2" class="nav-link" data-scroll-target="#data-exploration-2">Data exploration</a></li>
+  <li><a href="#hypothesis-2" id="toc-hypothesis-2" class="nav-link" data-scroll-target="#hypothesis-2">Hypothesis</a></li>
+  <li><a href="#assumptions-2" id="toc-assumptions-2" class="nav-link" data-scroll-target="#assumptions-2">Assumptions</a></li>
+  <li><a href="#test-statistic-2" id="toc-test-statistic-2" class="nav-link" data-scroll-target="#test-statistic-2">Test statistic</a></li>
+  <li><a href="#p-value-2" id="toc-p-value-2" class="nav-link" data-scroll-target="#p-value-2">P-value</a></li>
+  <li><a href="#conclusion-2" id="toc-conclusion-2" class="nav-link" data-scroll-target="#conclusion-2">Conclusion</a></li>
+  </ul></li>
+  </ul>
+</nav>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block page-columns page-full" id="quarto-document-content">
+
+
+
+
+
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Learning outcomes
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>Learn to use R to calculate a 2-sample <em>t</em>-test
+<ul>
+<li>independent samples with constant variance</li>
+<li>independent samples with unequal variance</li>
+<li>paired samples</li>
+<li>data transformations</li>
+</ul></li>
+<li>Apply the steps for hypothesis testing from lectures</li>
+<li>Learn how to interpret statistical output<br>
+</li>
+</ul>
+</div>
+</div>
+<section id="before-we-begin" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="before-we-begin">Before we begin</h2>
+<p>Create your Quarto document and save it as <code>Lab-06.Rmd</code> or similar. The following data files are required:</p>
+
+<div class="no-row-height column-margin column-container"><div class="">
+<p>You may need to right-click on the link and select “Save link as…” to download the data files.</p>
+</div></div><ul>
+<li><a href="Barley.csv"><code>Barley.csv</code></a></li>
+<li><a href="Plant_growth.csv"><code>Plant_growth.csv</code></a></li>
+<li><a href="Turbidity.csv"><code>Turbidity.csv</code></a></li>
+<li><a href="Cattle.csv"><code>Cattle.csv</code></a></li>
+</ul>
+<p>The following external packages are used in this lab. Install them if you have not done so already.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="fu">c</span>(<span class="st">"tidyverse"</span>, <span class="st">"car"</span>), </span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">repo =</span> <span class="st">"https://cloud.r-project.org"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Finally, try to complete today’s lab exercises in pairs and try out <a href="https://en.wikipedia.org/wiki/Pair_programming">pair programming</a>, where one person writes the code and the other person reviews each line as it is written. You can swap roles every 10 minutes or so. This is a great way to learn from each other and to improve your coding skills.</p>
+</section>
+<section id="exercise-1-barley-walk-through" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="exercise-1-barley-walk-through">Exercise 1: barley (walk-through)</h2>
+<section id="background" class="level3">
+<h3 class="anchored" data-anchor-id="background">Background</h3>
+<p>An experiment was designed to compare two varieties of spring barley. Thirty four plots were used, seventeen being randomly allocated to variety A and seventeen to variety B. Unfortunately five plots were destroyed. The yields (t/ha) from the remaining plots were as they appear in the file <code>Barley.csv</code>.</p>
+</section>
+<section id="instructions" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="instructions">Instructions</h3>
+<p>First, quickly explore the data; then, utilise the <strong>HATPC</strong> process and test the hypothesis that the two varieties give equal yields, assuming that the samples are independent.</p>
+
+<div class="no-row-height column-margin column-container"><div class="">
+<p>HATPC:</p>
+<ul>
+<li>Hypothesis</li>
+<li>Assumptions</li>
+<li>Test (statistic)</li>
+<li>P-value</li>
+<li>Conclusion</li>
+</ul>
+</div></div><div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Level of significance
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>The level of significance is usually set at 0.05.</strong> This value is generally accepted in the scientific community and is also linked to Type 2 errors, where choosing a lower significance increases the likelihood of failing to reject the null hypothesis when it is false.</p>
+</div>
+</div>
+</section>
+<section id="data-exploration" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="data-exploration">Data exploration</h3>
+<p>First we load the data and inspect its structure to see if it needs to be cleaned or transformed. The <code>glimpse()</code> function is a tidy version of <code>str()</code> that provides a quick overview of the data that focuses on the variables, ignoring data attributes.</p>
+
+<div class="no-row-height column-margin column-container"><div class="">
+<p>Try to compare <code>str()</code> and <code>glimpse()</code> to see what the differences are.</p>
+</div></div><div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>barley <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(<span class="st">"barley.csv"</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">glimpse</span>(barley)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 29
+Columns: 2
+$ Variety &lt;chr&gt; "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A…
+$ Yield   &lt;dbl&gt; 4.6, 4.3, 3.8, 3.4, 3.9, 3.9, 3.9, 4.4, 3.6, 3.6, 4.7, 3.9, 3.…</code></pre>
+</div>
+</div>
+<p>The <code>Variety</code> column is a factor with two levels, <code>A</code> and <code>B</code>, but it is defined as a character. We can convert it to a factor using the <code>mutate()</code> function from the <code>dplyr</code> package, but it is not necessary for the <em>t</em>-test since R will automatically convert it to a factor.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+✔ dplyr     1.1.4     ✔ readr     2.1.5
+✔ forcats   1.0.0     ✔ stringr   1.5.1
+✔ ggplot2   3.5.0     ✔ tibble    3.2.1
+✔ lubridate 1.9.3     ✔ tidyr     1.3.1
+✔ purrr     1.0.2     
+── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>barley <span class="ot">&lt;-</span> <span class="fu">mutate</span>(barley, <span class="at">Variety =</span> <span class="fu">as.factor</span>(Variety))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Quickly preview the data as a plot to see if there are any trends or unusual observations.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>barley <span class="sc">%&gt;%</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Variety, <span class="at">y =</span> Yield)) <span class="sc">+</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Lab-06_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>A trained eye will anticipate that the data may not meet the assumption of equal variance; however, we will test this assumption later. Otherwise, there appear to be no unusual observations in the data.</p>
+</section>
+<section id="hypothesis" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="hypothesis">Hypothesis</h3>
+<p>What are the null and alternative hypotheses? We can use the following notation:</p>
+<p><span class="math display">H_0: \mu_A = \mu_B</span> <span class="math display">H_1: \mu_A \neq \mu_B</span></p>
+<p>where <span class="math inline">\mu_A</span> and <span class="math inline">\mu_B</span> are the population means of varieties A and B, respectively.</p>
+
+<div class="no-row-height column-margin column-container"><div class="">
+<p>It is <strong>important</strong> that when using mathematical symbols to denote the null and alternative hypotheses, you should <strong>always</strong> define what the symbols mean. Otherwise, the reader may not understand what you are referring to.</p>
+</div></div><p>The equations above are written in <span class="math inline">\LaTeX</span>, a typesetting system that is commonly used in scientific writing. You can learn more about <span class="math inline">\LaTeX</span> <a href="https://www.latex-project.org/">here</a>. The raw syntax used to write the equations are shown below:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>$$H_0: \mu_A = \mu_B$$</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>$$H_1: \mu_A \neq \mu_B$$</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>Why do we always define the null and alternative hypotheses?</strong> In complex research projects or when working in a team, it is important to ensure that everyone is on the same page. By defining the hypotheses, you can avoid misunderstandings and ensure that everyone is working towards the same goal as the mathematical notation is clear and unambiguous.</p>
+</section>
+<section id="assumptions" class="level3">
+<h3 class="anchored" data-anchor-id="assumptions">Assumptions</h3>
+<section id="normality" class="level4">
+<h4 class="anchored" data-anchor-id="normality">Normality</h4>
+<p>There are many ways to check for normality. Here we will use the QQ-plot. Use of <code>ggplot2</code> is preferred (as a means of practice) but since we are just exploring data, base R functions are not a problem to use.</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true">Using <code>ggplot2</code></a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">Using base R</a></li></ul>
+<div class="tab-content">
+<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(barley, <span class="fu">aes</span>(<span class="at">sample =</span> Yield)) <span class="sc">+</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_qq</span>() <span class="sc">+</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_qq_line</span>() <span class="sc">+</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> Variety)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Lab-06_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>))</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">qqnorm</span>(barley<span class="sc">$</span>Yield[barley<span class="sc">$</span>Variety <span class="sc">==</span> <span class="st">"A"</span>], <span class="at">main =</span> <span class="st">"Variety A"</span>)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="fu">qqline</span>(barley<span class="sc">$</span>Yield[barley<span class="sc">$</span>Variety <span class="sc">==</span> <span class="st">"A"</span>])</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="fu">qqnorm</span>(barley<span class="sc">$</span>Yield[barley<span class="sc">$</span>Variety <span class="sc">==</span> <span class="st">"B"</span>], <span class="at">main =</span> <span class="st">"Variety B"</span>)</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="fu">qqline</span>(barley<span class="sc">$</span>Yield[barley<span class="sc">$</span>Variety <span class="sc">==</span> <span class="st">"B"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Lab-06_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p><strong>Question</strong>: Do the plots indicate the data are normally distributed?</p>
+<p><strong>Answer</strong>: Yes, the data appear to be normally distributed as the QQ-plot shows that the data points are close to the line.</p>
+</section>
+<section id="homogeneity-of-variance" class="level4">
+<h4 class="anchored" data-anchor-id="homogeneity-of-variance">Homogeneity of variance</h4>
+<p>From the boxplot, we can see that there is some indication that the variances are not equal. We can test this assumption using Bartlett’s test or Levene’s test; here we will just use Bartlett’s test.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bartlett.test</span>(Yield <span class="sc">~</span> Variety, <span class="at">data =</span> barley)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Bartlett test of homogeneity of variances
+
+data:  Yield by Variety
+Bartlett's K-squared = 14.616, df = 1, p-value = 0.0001318</code></pre>
+</div>
+</div>
+<p><strong>Question</strong>: Does the Bartlett’s test indicate the two groups have equal variances? What effect will that have on the analysis?</p>
+<p><strong>Answer</strong>: The two groups have unequal variance (Bartlett’s test: <span class="math inline">X^2 = 14.6</span>, <span class="math inline">p &lt; 0.01</span>). This means that we will need to use the Welch’s <em>t</em>-test, which does not assume equal variances.</p>
+</section>
+</section>
+<section id="test-statistic" class="level3">
+<h3 class="anchored" data-anchor-id="test-statistic">Test statistic</h3>
+<p>We can now calculate the test statistic using the <code>t.test()</code> function in R. Since the variances are unequal, we do not have to specify the <code>var.equal</code> argument – the default test for <code>t.test()</code> is the Welch’s <em>t</em>-test which does not assume equal variances.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(Yield <span class="sc">~</span> Variety, <span class="at">data =</span> barley)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Welch Two Sample t-test
+
+data:  Yield by Variety
+t = -4.9994, df = 19.441, p-value = 7.458e-05
+alternative hypothesis: true difference in means between group A and group B is not equal to 0
+95 percent confidence interval:
+ -0.9293569 -0.3814274
+sample estimates:
+mean in group A mean in group B 
+       4.052941        4.708333 </code></pre>
+</div>
+</div>
+</section>
+<section id="p-value" class="level3">
+<h3 class="anchored" data-anchor-id="p-value">P-value</h3>
+<p>Since the p-value is &lt; 0.05, we can reject the null hypothesis that the mean yield of both varieties is equal.</p>
+</section>
+<section id="conclusion" class="level3">
+<h3 class="anchored" data-anchor-id="conclusion">Conclusion</h3>
+<p>The conclusion needs to be brought into the context of the study. In a scientific report or paper, you would write something like this:</p>
+<blockquote class="blockquote">
+<p>The mean yield of barley variety A was significantly different from that of variety B (<span class="math inline">t = -5.0</span>, <span class="math inline">df = 19.4</span>, <span class="math inline">p &lt; 0.01</span>).</p>
+</blockquote>
+</section>
+</section>
+<section id="exercise-2-plant-growth" class="level2">
+<h2 class="anchored" data-anchor-id="exercise-2-plant-growth">Exercise 2: plant growth</h2>
+<section id="background-1" class="level3">
+<h3 class="anchored" data-anchor-id="background-1">Background</h3>
+<p>In a test of a particular treatment aimed at inducing growth, 20 plants were grouped into ten pairs so that the two members of each pair were as similar as possible. One plant of each pair was chosen randomly and treated; the other was left as a control. The increases in height (in centimetres) of plants over a two-week period are given in the file Two week plant heights. We wish to compare whether the treatment is actually inducing improved growth, as compared to the control.</p>
+</section>
+<section id="instructions-1" class="level3">
+<h3 class="anchored" data-anchor-id="instructions-1">Instructions</h3>
+<p>Here, we have two samples, and the samples are paired as it is a before-after experiment. So we’d like to conduct a paired <em>t</em>-test.</p>
+<p>For paired <em>t</em>-tests the analysis is performed as a 1-sample <em>t</em>-test on the difference between each pair so the only assumption is the normality assumption.</p>
+<p>Copy the structure below and perform your analysis in your document.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode md code-with-copy"><code class="sourceCode markdown"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">## Exercise 2: plant growth</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">### Data exploration</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="fu">### Hypothesis</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="fu">### Assumptions</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Normality</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Homogeneity of variance</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="fu">### Test statistic</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="fu">### P-value</span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="fu">### Conclusion</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Note that the data is <em>not</em> tidy. The code below will convert the data to the long format and assign it to <code>tidy_plant</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>plant_growth <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(<span class="st">"Plant_growth.csv"</span>)</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>tidy_plant <span class="ot">&lt;-</span> plant_growth <span class="sc">%&gt;%</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="fu">c</span>(Treated, Control), <span class="at">names_to =</span> <span class="st">"Treatment"</span>, <span class="at">values_to =</span> <span class="st">"Height"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>You may also need to perform a Shapiro-Wilk test to check for normality. To do this for each group, you can use the <code>tapply()</code> function.</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tapply</span>(tidy_plant<span class="sc">$</span>Height, tidy_plant<span class="sc">$</span>Treatment, shapiro.test)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+<section id="answer-2" class="level2" style="color:green;">
+<h2 style="color:green;" class="anchored" data-anchor-id="answer-2">Answer 2</h2>
+<section id="data-exploration-1" class="level3" style="color:green;">
+<h3 style="color:green;" class="anchored" data-anchor-id="data-exploration-1">Data exploration</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(tidy_plant, <span class="fu">aes</span>(<span class="at">x =</span> Treatment, <span class="at">y =</span> Height)) <span class="sc">+</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Lab-06_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The boxplot shows no unusual observations.</p>
+</section>
+<section id="hypothesis-1" class="level3" style="color:green;">
+<h3 style="color:green;" class="anchored" data-anchor-id="hypothesis-1">Hypothesis</h3>
+<p><span class="math display">H_0: \mu_{\text{treated}} = \mu_{\text{control}}</span> <span class="math display">H_1: \mu_{\text{treated}} \neq \mu_{\text{control}}</span></p>
+<p>where <span class="math inline">\mu_{\text{treated}}</span> and <span class="math inline">\mu_{\text{control}}</span> are the mean increses in height of the treated and control plants, respectively.</p>
+</section>
+<section id="assumptions-1" class="level3" style="color:green;">
+<h3 style="color:green;" class="anchored" data-anchor-id="assumptions-1">Assumptions</h3>
+<section id="normality-1" class="level4" style="color:green;">
+<h4 style="color:green;" class="anchored" data-anchor-id="normality-1">Normality</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(tidy_plant, <span class="fu">aes</span>(<span class="at">sample =</span> Height)) <span class="sc">+</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_qq</span>() <span class="sc">+</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_qq_line</span>() <span class="sc">+</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> Treatment)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Lab-06_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The QQ-plots show that the data are normally distributed, but there are some outliers worth checking. A formal test for normality will give us a better idea of whether the assumption is met.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># perform test on groups</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tapply</span>(tidy_plant<span class="sc">$</span>Height, tidy_plant<span class="sc">$</span>Treatment, shapiro.test)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$Control
+
+    Shapiro-Wilk normality test
+
+data:  X[[i]]
+W = 0.89588, p-value = 0.1973
+
+
+$Treated
+
+    Shapiro-Wilk normality test
+
+data:  X[[i]]
+W = 0.93139, p-value = 0.4617</code></pre>
+</div>
+</div>
+<p>The Shapiro-Wilk test indicates that the data are normally distributed.</p>
+</section>
+<section id="homogeneity-of-variance-1" class="level4" style="color:green;">
+<h4 style="color:green;" class="anchored" data-anchor-id="homogeneity-of-variance-1">Homogeneity of variance</h4>
+<p>There is <strong>no need</strong> to test for homogeneity of variance in a paired <em>t</em>-test!</p>
+</section>
+</section>
+<section id="test-statistic-1" class="level3" style="color:green;">
+<h3 style="color:green;" class="anchored" data-anchor-id="test-statistic-1">Test statistic</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(Height <span class="sc">~</span> Treatment, <span class="at">data =</span> tidy_plant, <span class="at">paired =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Paired t-test
+
+data:  Height by Treatment
+t = -2.5468, df = 9, p-value = 0.03136
+alternative hypothesis: true mean difference is not equal to 0
+95 percent confidence interval:
+ -3.2099887 -0.1900113
+sample estimates:
+mean difference 
+           -1.7 </code></pre>
+</div>
+</div>
+</section>
+<section id="p-value-1" class="level3" style="color:green;">
+<h3 style="color:green;" class="anchored" data-anchor-id="p-value-1">P-value</h3>
+<p>The p-value is 0.03 which is less than 0.05, so we reject the null hypothesis that the mean increase in height of the treated and control plants is equal.</p>
+</section>
+<section id="conclusion-1" class="level3" style="color:green;">
+<h3 style="color:green;" class="anchored" data-anchor-id="conclusion-1">Conclusion</h3>
+<p>The mean increase in height of the treated plants is significantly different from that of the control plants (<span class="math inline">t = 2.5</span>, <span class="math inline">df = 9</span>, <span class="math inline">p = 0.03</span>).</p>
+</section>
+</section>
+<section id="exercise-3-turbidity" class="level2">
+<h2 class="anchored" data-anchor-id="exercise-3-turbidity">Exercise 3: turbidity</h2>
+<section id="background-2" class="level3">
+<h3 class="anchored" data-anchor-id="background-2">Background</h3>
+<p>A new filtering process was installed at a dam which provided drinking water for a nearby town. To check on its success, a number of water samples were taken at random times and locations in the weeks before and after the process was installed. The following are the turbidity values (units = NTU) of the water samples.</p>
+</section>
+</section>
+<section id="instructions-2" class="level2">
+<h2 class="anchored" data-anchor-id="instructions-2">Instructions</h2>
+<p>Now we consider further examples of a two-sample <em>t</em>-test, but where the assumption of equal variance and normality may not be met for the raw data. Sometimes after applying a data transformation the analysis can proceed assuming equal variances – but always check after a data transformation.</p>
+<p>The data can be read with the code below:</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>turbidity <span class="ot">&lt;-</span><span class="fu">read_csv</span>(<span class="st">"Turbidity.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>For data transformation, you may need to create a new variable in your dataset to store the transformed data. For example, to create a new variable <code>TurbLog10</code> that stores the log<sub>10</sub> transformed turbidity values, you can use the following code:</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>turbidity<span class="sc">$</span>TurbLog10 <span class="ot">&lt;-</span> <span class="fu">log10</span>(turbidity<span class="sc">$</span>Turbidity)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>To interpret the results for your conclusions, you may need to back-transform the mean and/or confidence interval values. To back transform log<sub>10</sub> data you use:</p>
+<p><span class="math display">10^{\text{mean or CI}}</span></p>
+<p>To back-transform natural log, log<sub>e</sub>, you use:</p>
+<p><span class="math display">e^{\text{mean or CI}}</span></p>
+</section>
+<section id="answer-3" class="level2" style="color:green;">
+<h2 style="color:green;" class="anchored" data-anchor-id="answer-3">Answer 3</h2>
+<section id="data-exploration-2" class="level3" style="color:green;">
+<h3 style="color:green;" class="anchored" data-anchor-id="data-exploration-2">Data exploration</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>turbidity <span class="ot">&lt;-</span><span class="fu">read_csv</span>(<span class="st">"Turbidity.csv"</span>)</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(turbidity, <span class="fu">aes</span>(<span class="at">x =</span> Time, <span class="at">y =</span> Turbidity)) <span class="sc">+</span> </span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Lab-06_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The boxplot shows skewing of the data, and outliers, a strong indication that the data will have issues meeting the assumption of normality. It is also likely that the variances are not equal as the boxplot shows different spreads.</p>
+</section>
+<section id="hypothesis-2" class="level3" style="color:green;">
+<h3 style="color:green;" class="anchored" data-anchor-id="hypothesis-2">Hypothesis</h3>
+<p><span class="math display">H_0: \mu_{\text{before}} = \mu_{\text{after}}</span> <span class="math display">H_1: \mu_{\text{before}} \neq \mu_{\text{after}}</span></p>
+<p>where <span class="math inline">\mu_{\text{before}}</span> and <span class="math inline">\mu_{\text{after}}</span> are the mean turbidity values before and after the new filtering process was installed.</p>
+</section>
+<section id="assumptions-2" class="level3" style="color:green;">
+<h3 style="color:green;" class="anchored" data-anchor-id="assumptions-2">Assumptions</h3>
+<section id="normality-part-1" class="level4" style="color:green;">
+<h4 style="color:green;" class="anchored" data-anchor-id="normality-part-1">Normality: part 1</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(turbidity, <span class="fu">aes</span>(<span class="at">sample =</span> Turbidity)) <span class="sc">+</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_qq</span>() <span class="sc">+</span></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_qq_line</span>() <span class="sc">+</span></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> Time)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Lab-06_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The QQ-plots show that the data are not normally distributed. Transformation of the data is required – there is no need to look at the equal variances just yet.</p>
+</section>
+<section id="transform-data" class="level4" style="color:green;">
+<h4 style="color:green;" class="anchored" data-anchor-id="transform-data">Transform data</h4>
+<p>We will use the natural log transformation to normalise the data.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>turbidity<span class="sc">$</span>TurbLog10 <span class="ot">&lt;-</span> <span class="fu">log10</span>(turbidity<span class="sc">$</span>Turbidity)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="normality-part-2" class="level4" style="color:green;">
+<h4 style="color:green;" class="anchored" data-anchor-id="normality-part-2">Normality: part 2</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(turbidity, <span class="fu">aes</span>(<span class="at">sample =</span> TurbLog10)) <span class="sc">+</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_qq</span>() <span class="sc">+</span></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_qq_line</span>() <span class="sc">+</span></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> Time)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Lab-06_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The QQ-plots show that the data look better. We can now perform a Shapiro-Wilk test to confirm this.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tapply</span>(turbidity<span class="sc">$</span>TurbLog10, turbidity<span class="sc">$</span>Time, shapiro.test)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$After
+
+    Shapiro-Wilk normality test
+
+data:  X[[i]]
+W = 0.96995, p-value = 0.8981
+
+
+$Before
+
+    Shapiro-Wilk normality test
+
+data:  X[[i]]
+W = 0.97566, p-value = 0.9602</code></pre>
+</div>
+</div>
+<p>The Shapiro-Wilk test indicates that the data are normally distributed.</p>
+</section>
+<section id="homogeneity-of-variance-2" class="level4" style="color:green;">
+<h4 style="color:green;" class="anchored" data-anchor-id="homogeneity-of-variance-2">Homogeneity of variance</h4>
+<p>We check the assumption of equal variance after the transformation.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bartlett.test</span>(TurbLog10 <span class="sc">~</span> Time, <span class="at">data =</span> turbidity)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Bartlett test of homogeneity of variances
+
+data:  TurbLog10 by Time
+Bartlett's K-squared = 0.017795, df = 1, p-value = 0.8939</code></pre>
+</div>
+</div>
+<p>The Bartlett’s test indicates that the variances are equal. We can now perform the <em>t</em>-test on the transformed data.</p>
+</section>
+</section>
+<section id="test-statistic-2" class="level3" style="color:green;">
+<h3 style="color:green;" class="anchored" data-anchor-id="test-statistic-2">Test statistic</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(TurbLog10 <span class="sc">~</span> Time, <span class="at">data =</span> turbidity, <span class="at">var.equal =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Two Sample t-test
+
+data:  TurbLog10 by Time
+t = -3.7169, df = 17, p-value = 0.001714
+alternative hypothesis: true difference in means between group After and group Before is not equal to 0
+95 percent confidence interval:
+ -1.302095 -0.359140
+sample estimates:
+ mean in group After mean in group Before 
+            0.683656             1.514274 </code></pre>
+</div>
+</div>
+</section>
+<section id="p-value-2" class="level3" style="color:green;">
+<h3 style="color:green;" class="anchored" data-anchor-id="p-value-2">P-value</h3>
+<p>The p-value is 0.007, which is less than 0.05, so we reject the null hypothesis that the mean turbidity values before and after the new filtering process was installed are equal.</p>
+</section>
+<section id="conclusion-2" class="level3" style="color:green;">
+<h3 style="color:green;" class="anchored" data-anchor-id="conclusion-2">Conclusion</h3>
+<p>We want to make a biological conclusion based on the results. To do this, we need to back-transform the mean difference and the confidence intervals so that the units are in NTU, not log<sub>10</sub> NTU.</p>
+<section id="mean-difference" class="level4" style="color:green;">
+<h4 style="color:green;" class="anchored" data-anchor-id="mean-difference">Mean difference</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="dv">10</span><span class="sc">^</span>(<span class="fl">1.514274</span> <span class="sc">-</span> <span class="fl">0.683656</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 6.770457</code></pre>
+</div>
+</div>
+</section>
+<section id="lower-and-upper-ci" class="level4" style="color:green;">
+<h4 style="color:green;" class="anchored" data-anchor-id="lower-and-upper-ci">Lower and upper CI</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="dv">10</span><span class="sc">^</span>(<span class="fl">0.359140</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2.286336</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="dv">10</span><span class="sc">^</span>(<span class="fl">1.302095</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 20.04911</code></pre>
+</div>
+</div>
+<p>The mean turbidity values before and after the new filtering process was installed are significantly different (<span class="math inline">t = -3.7</span>, <span class="math inline">df = 17</span>, <span class="math inline">p = 0.007</span>). The new filtering process has effectively reduced turbidity by 7 NTU on average. We are 95% confident that the new filtering process will reduce water turbidity by between 2.3 and 20 NTU.</p>
+
+
+</section>
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      return note.innerHTML;
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
