@@ -29,10 +29,9 @@ Create your Quarto document and save it as `Lab-06.Rmd` or similar. The followin
 You may need to right-click on the link and select "Save link as..." to download the data files.
 :::
 
-- [`Barley.csv`](./Barley.csv)
-- [`Plant_growth.csv`](./Plant_growth.csv)
-- [`Turbidity.csv`](./Turbidity.csv)
-- [`Cattle.csv`](./Cattle.csv)
+{{< downloadthis Barley.csv dname="Barley" label="Barley.csv" type="info">}}
+{{< downloadthis Plant_growth.csv dname="Plant_growth" label="Plant_growth.csv" type="info">}}
+{{< downloadthis Turbidity.csv dname="Turbidity" label="Turbidity.csv" type="info">}}
 
 The following external packages are used in this lab. Install them if you have not done so already.
 
