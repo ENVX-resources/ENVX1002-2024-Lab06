@@ -11,12 +11,12 @@ date-format: "[Semester 1,] YYYY"
 
 format:
   assignment-html:
-    embed-resources: false
+    embed-resources: true
     title-block-banner: "white"
     title-block-banner-color: "#000"
     reference-location: margin
     citation-location: margin
-  # assignment-typst: default # enable for pdf output (typst format)
+  assignment-typst: default # enable for pdf output (typst format)
 
 execute:
   freeze: auto
