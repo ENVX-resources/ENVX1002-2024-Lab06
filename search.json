@@ -11,7 +11,7 @@
     "href": "Lab-06.html#before-we-begin",
     "title": "Lab-06 Two-sample t-test",
     "section": "Before we begin",
-    "text": "Before we begin\nCreate your Quarto document and save it as Lab-06.Rmd or similar. The following data files are required:\n\n\nYou may need to right-click on the link and select “Save link as…” to download the data files.\n\nBarley.csv\nPlant_growth.csv\nTurbidity.csv\nCattle.csv\n\nThe following external packages are used in this lab. Install them if you have not done so already.\ninstall.packages(c(\"tidyverse\", \"car\"), \n  repo = \"https://cloud.r-project.org\")\nFinally, try to complete today’s lab exercises in pairs and try out pair programming, where one person writes the code and the other person reviews each line as it is written. You can swap roles every 10 minutes or so. This is a great way to learn from each other and to improve your coding skills."
+    "text": "Before we begin\nCreate your Quarto document and save it as Lab-06.Rmd or similar. The following data files are required:\n\n\nYou may need to right-click on the link and select “Save link as…” to download the data files.\n Barley.csv   Plant_growth.csv   Turbidity.csv \nThe following external packages are used in this lab. Install them if you have not done so already.\ninstall.packages(c(\"tidyverse\", \"car\"), \n  repo = \"https://cloud.r-project.org\")\nFinally, try to complete today’s lab exercises in pairs and try out pair programming, where one person writes the code and the other person reviews each line as it is written. You can swap roles every 10 minutes or so. This is a great way to learn from each other and to improve your coding skills."
   },
   {
     "objectID": "Lab-06.html#exercise-1-barley-walk-through",
