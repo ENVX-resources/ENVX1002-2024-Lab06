@@ -29,10 +29,10 @@ Create your Quarto document and save it as `Lab-06.Rmd` or similar. The followin
 You may need to right-click on the link and select "Save link as..." to download the data files.
 :::
 
-- [`Barley.csv`](Barley.csv)
-- [`Plant_growth.csv`](Plant_growth.csv)
-- [`Turbidity.csv`](Turbidity.csv)
-- [`Cattle.csv`](Cattle.csv)
+- [`Barley.csv`](./Barley.csv)
+- [`Plant_growth.csv`](./Plant_growth.csv)
+- [`Turbidity.csv`](./Turbidity.csv)
+- [`Cattle.csv`](./Cattle.csv)
 
 The following external packages are used in this lab. Install them if you have not done so already.
 
@@ -96,8 +96,8 @@ Quickly preview the data as a plot to see if there are any trends or unusual obs
 #| output: true
 
 barley %>%
-  ggplot(aes(x = Variety, y = Yield)) +
-  geom_boxplot()
+    ggplot(aes(x = Variety, y = Yield)) +
+    geom_boxplot()
 ```
 
 A trained eye will anticipate that the data may not meet the assumption of equal variance; however, we will test this assumption later. Otherwise, there appear to be no unusual observations in the data.
@@ -115,7 +115,7 @@ where $\mu_A$ and $\mu_B$ are the population means of varieties A and B, respect
 It is **important** that when using mathematical symbols to denote the null and alternative hypotheses, you should **always** define what the symbols mean. Otherwise, the reader may not understand what you are referring to.
 :::
 
-The equations above are written in $\LaTeX$, a typesetting system that is commonly used in scientific writing. You can learn more about $\LaTeX$ [here](https://www.latex-project.org/). The raw syntax used to write the equations are shown below:
+The equations above are written in LaTeX, a typesetting system that is commonly used in scientific writing. You can learn more about LaTeX [here](https://www.latex-project.org/). The raw syntax used to write the equations are shown below:
 
 ```markdown
 $$H_0: \mu_A = \mu_B$$
@@ -136,9 +136,9 @@ There are many ways to check for normality. Here we will use the QQ-plot. Use of
 #| output: true
 
 ggplot(barley, aes(sample = Yield)) +
-  stat_qq() +
-  stat_qq_line() +
-  facet_wrap(~ Variety)
+    stat_qq() +
+    stat_qq_line() +
+    facet_wrap(~Variety)
 
 ```
 
@@ -228,7 +228,7 @@ Note that the data is *not* tidy. The code below will convert the data to the lo
 plant_growth <- readr::read_csv("Plant_growth.csv")
 
 tidy_plant <- plant_growth %>%
-  pivot_longer(cols = c(Treated, Control), names_to = "Treatment", values_to = "Height")
+    pivot_longer(cols = c(Treated, Control), names_to = "Treatment", values_to = "Height")
 ```
 
 You may also need to perform a Shapiro-Wilk test to check for normality. To do this for each group, you can use the `tapply()` function.
@@ -245,7 +245,7 @@ tapply(tidy_plant$Height, tidy_plant$Treatment, shapiro.test)
 
 ```{r}
 ggplot(tidy_plant, aes(x = Treatment, y = Height)) +
-  geom_boxplot()
+    geom_boxplot()
 ```
 
 The boxplot shows no unusual observations.
@@ -263,9 +263,9 @@ where $\mu_{\text{treated}}$ and $\mu_{\text{control}}$ are the mean increses in
 
 ```{r}
 ggplot(tidy_plant, aes(sample = Height)) +
-  stat_qq() +
-  stat_qq_line() +
-  facet_wrap(~ Treatment)
+    stat_qq() +
+    stat_qq_line() +
+    facet_wrap(~Treatment)
 ```
 
 The QQ-plots show that the data are normally distributed, but there are some outliers worth checking. A formal test for normality will give us a better idea of whether the assumption is met.
@@ -335,9 +335,9 @@ $$e^{\text{mean or CI}}$$
 ### Data exploration {style="color:green;"}
 
 ```{r}
-turbidity <-read_csv("Turbidity.csv")
-ggplot(turbidity, aes(x = Time, y = Turbidity)) + 
-  geom_boxplot()
+turbidity <- read_csv("Turbidity.csv")
+ggplot(turbidity, aes(x = Time, y = Turbidity)) +
+    geom_boxplot()
 ```
 
 The boxplot shows skewing of the data, and outliers, a strong indication that the data will have issues meeting the assumption of normality. It is also likely that the variances are not equal as the boxplot shows different spreads.
@@ -354,9 +354,9 @@ where $\mu_{\text{before}}$ and $\mu_{\text{after}}$ are the mean turbidity valu
 
 ```{r}
 ggplot(turbidity, aes(sample = Turbidity)) +
-  stat_qq() +
-  stat_qq_line() +
-  facet_wrap(~ Time)
+    stat_qq() +
+    stat_qq_line() +
+    facet_wrap(~Time)
 ```
 
 The QQ-plots show that the data are not normally distributed. Transformation of the data is required – there is no need to look at the equal variances just yet.
@@ -373,9 +373,9 @@ turbidity$TurbLog10 <- log10(turbidity$Turbidity)
 
 ```{r}
 ggplot(turbidity, aes(sample = TurbLog10)) +
-  stat_qq() +
-  stat_qq_line() +
-  facet_wrap(~ Time)
+    stat_qq() +
+    stat_qq_line() +
+    facet_wrap(~Time)
 ```
 
 The QQ-plots show that the data look better. We can now perform a Shapiro-Wilk test to confirm this.

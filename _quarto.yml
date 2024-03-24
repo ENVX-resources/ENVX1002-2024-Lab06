@@ -23,4 +23,5 @@ execute:
 
 profile:
   default: 
-    - solution
+    # - solution
+    - exercise
